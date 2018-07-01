@@ -1,0 +1,378 @@
+#+TITLE: lec-02 Learning Answer Yes or No
+* Perceptron Hypothesis Set
+  hyperplanes/linear classifiers in Rd
+*** credit approval problem
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 11:06:46
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-24_11-06-46.png]]
+*** what hypothesis set can we use
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 11:07:26
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-24_11-07-26.png]]
+
+    这个 perceptron 就是一个简单的 hypothesis set.
+*** the huge map of ML model                                          :YIDDI:
+    I have huge dataset of approval credit -------> if a new customer come in, should a give credit card or not.
+
+    dataset with label(give or not)        -------> a new data come in, how to classify it.
+
+    build hypothesis set, may introduce some parameters(flexible and unknown variable).
+    - should use the parameter(the flexible and unknown variables) which is easy to optimize
+    - should complex enough to cover the data's hidden pattern, and simple enough to
+      guarantee the generalize ability(not the 'couple lover' only for the dataset).
+
+    using a proper algo, to reduce the range of these new parameters step by step,
+    until get the specified values. By alternative thinkings, we select a better
+    function(give parameters some initial values, and better values, and more better
+    values, and ...) from hypothesis, step by step, until find the best values.
+
+    - how we define the 'better' --- maybe accuracy by applying function on dataset
+    - how we define bad and good parameter --- by find the hidden math
+      representation or physical meannings of original problem, maybe more related
+      to linear algobra.
+    - how we update parameter
+    - when we stop.
+
+    then we get a function(or a distribution), from which we can give the input data an output label.
+
+*** what is hypothesis set
+    H 就是通过引入 *新的参数* :
+    - w
+    - threshold
+    和 *新的函数* :
+    - sign()
+    来帮助我们把问题空间映射到解空间. 所以引入什么‘参数’要看问题空间和解空间的特点。
+    很明显'核发信用卡'是一个是非题，所以我用 ~sign~ 符号函数，然后再引入一个参数 ~w~
+    来辅佐我获得更好的判断 --- *give different feature different weight*.
+
+    w 的本质是什么？這些特徵值有的重要,有的不重要,我們可以為這些特徵值依照重要性
+    配上一個權重分數~wi~, 所以當這些分數加總起來之後, 如果超過一個界線 threshold
+    時, 我們就可以就可以決定核發信用卡，否則就不核發.
+
+
+    |                       | new function                     | new parameter                                                |
+    |-----------------------+----------------------------------+--------------------------------------------------------------|
+    | principle             | depend on what is the question   | depend on the core method used to solve the question         |
+    |-----------------------+----------------------------------+--------------------------------------------------------------|
+    | PLA                   | question: yes or no              | core method: if score of customer > threshold: yes, else no. |
+    |                       | function: sign                   | parameter: w determine the importance of each feature        |
+    |-----------------------+----------------------------------+--------------------------------------------------------------|
+    | Linear classification |                                  |                                                              |
+    |-----------------------+----------------------------------+--------------------------------------------------------------|
+    | Linear regression     |                                  |                                                              |
+    |-----------------------+----------------------------------+--------------------------------------------------------------|
+    | logistict regression  | question: what't the probability | core method: map score to probability                        |
+    |                       | function: sigmoid                | parameter: w                                                 |
+    |-----------------------+----------------------------------+--------------------------------------------------------------|
+*** why ~weighted sum~ in hypothesis
+    为什么是 weighted sum？因为不同的特征值重要程度不同，把 *重要程度作为一个系
+    数* 与该特征值相乘，然后加总之后得到的分数，就是提供这一套特征值的那个样本的
+    得分。
+*** what is Algo
+    Algo 的本质就是通过 D 对 H 中参数的改进和选择(improve and select ~w~)机制，
+    观察H的物理意义/几何意义，找到改进的可能, 改进的方法是从错误(预测 label 与
+    数据集实际 label 的不同)中学习， 这里包函两个核心问题：
+    1. 如何看待错误：
+       1. error numeralization : (y^ != y) ===function==> some number
+          1. 0/1 error: if $\hat{y} \neq y$, accumulate 1, $Ein(w) = \frac{1}{N}\sum_{i=0}^N sign[\hat{y} \neq y], \hat{y} = sign(w^Tx)$
+          2. square error: accumulate the distance between $\hat{y}$ and $y$, $Ein(w) = \frac{1}{N}\sum_{i=0}^N (\hat{y} - y)^2, \hat{y} = w^Tx$
+       2. reason error: some other theory ===hint==> large/small error, by this way we don't need to compute the error directly, we just optimize the formula of that theory.
+          1. loglikelihood: 我只要能最大化 likelihood(h) 也就是相当于最小化 error, we can get the cross-error: $Ein(w)=\frac{1}{N}\sum_{i=0}^N ln(1+exp(-y_ns_n)), \hat{y} = \Theta{w^Tx}, s=w^Tx_n$
+          2. note that,  using '$s$' instead of '$\hat{y}$' is the core difference between cross-error and 0/1 error, square error which use the '$\hat{y}$'
+    2. 如何更新参数： update w
+       1. if continuous, differentiable, convex use gradient descent: $\nabla{Ein(w)}=0 \rightarrow w=?$
+       2. else: use the geometrical meanings of vector $w$ and $x$: $w_{t+1} = w_{t} + yx$
+
+
+    eg, take PLA as example, 从数据点中选择一个来试探 wx 与 y
+    是否同号，同号就继续选择下一个点，异号就按照 w = w + yx 来更新 w，更新之后仍
+    旧这样去试探，直到某个 w 可以让所有的点都满足 wx 与 y 同号，停止返回这个w，
+    这个w就可以获得最优的函数 g。
+
+
+*** vector form of perceptron hypothesis                               :MATH:
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 11:10:49
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-24_11-10-49.png]]
+
+    #+BEGIN_EXAMPLE
+    H 就是通过引入 *新的参数* :
+    - w
+    - threshold
+    和 *新的函数* :
+    - sign()
+    来帮助我们把问题空间映射到解空间. 所以引入什么‘参数’要看问题空间和解空间的特点。
+    很明显'核发信用卡'是一个是非题，所以我用 ~sign~ 符号函数，然后再引入一个参数 ~w~
+    来辅佐我获得更好的判断.
+    #+END_EXAMPLE
+
+    注意这里为什么使用转置，因为默认在机器学习里，所有的向量都是列向量，所以这里必须
+    先转置，才能做内积。还要注意，这里的 x 是指某一个点，而不是所有的点。xi 是这个点
+    的第i个属性。
+*** what do perceptron 'look like'
+    #+BEGIN_EXAMPLE
+应该注意，符号函数 ~sign(x)~ 的数学图像表示形式： 图像表现与括号里边的函数一摸一
+样，但是要在函数图像的 +/- 两方图上不同的颜色.
+    #+END_EXAMPLE
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 11:50:37
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-24_11-50-37.png]]
+
+*** how we select from hypothesis
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 11:53:25
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-24_11-53-25.png]]
+
+    因为 hypothesis sett 是无穷多的，所以我们只能‘曲线救国’： *start from some g0,
+    and 'correct' its mistakes on D*. The method we do 'correcting' is *learning
+    algorithm*
+
+*** fun time
+* Perceptron Learning Algorithm (PLA)
+  correct mistakes and improve iteratively
+*** what is a *wrong* prediction
+    If we see x, y, w as vectors $\overrightarrow{x}$, $\overrightarrow{y}$, $\overrightarrow{w}$ , and see prediction as  $\hat{y}(=\overrightarrow{w}\overrightarrow{x})$,
+    - right prediction: $\hat{y}$ has same sign with $\overrightarrow{y}$ : $\overrightarrow{y}\hat{y}\less>0$
+    - wrong prediction: $\hat{y}$ has different sign with $\overrightarrow{y}$: $\overrightarrow{y}\hat{y}\less<0$
+
+*** how to *correct*                                               :UPDATE_W:
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 11:58:45
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-24_11-58-45.png]]
+
+    注意，这里的 w0 与 上面代表 threshold（阈值） 的 w0 是完全不同的概念。这里的 w0
+    是一个向量，表示初始时给定的 initial 值，一般采用 0 向量，即各位都是0
+    （0,0,0,...,0)上面代表 threshold 的 w0 表示的是w向量的 第0位。所以一般假定的
+    initial vector 应该是(threshold, 0,0,...,0)
+
+    注意, 这里的循环时没有设置结束值的， 这里的 $w_t^T$ 是向量，它应该与 $(x_{n(t)}, y_{n(t)})$ 联
+    合起来标记，表示的是在 t 次循环遇到的 (xn, yn) 点是错误的：也就是 wt * xn 的符号
+    与 yn 相异。这里的 wt 【并不是】 w 向量的第 t 个属性。
+
+*** implementation of PLA                                              :ALGO:
+    Algo 的本质就是对 H 中参数的改进和选择机制，观察H的物理意义/几何意义，找到改
+    进的可能。 从数据点中选择一个来试探 wx 与 y 是否同号，同号就继续选择下一个点，
+    异号就按照 w = w + yx 来更新 w，更新之后仍旧这样去试探，直到某个 w 可以让所
+    有的点都满足 wx 与 y 同号，停止返回这个w，这个w就可以获得最优的函数 g。
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 00:44:01
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-25_00-44-01.png]]
+
+*** illustrate the updating process
+    | w                   | x  | y_pred | y_true | result |
+    |---------------------+----+--------+--------+--------|
+    | 0                   | x1 |      0 |      1 | F      |
+    | w = 0 + x1*1        | x2 |      1 |      1 | T      |
+    | x1                  | x3 |      1 |      1 | T      |
+    | x1                  | x4 |     -1 |      1 | F      |
+    | w = x1+x4*1         | x5 |      1 |     -1 | F      |
+    | w = (x1+x4)+x5*(-1) | x6 |      1 |      1 | T      |
+
+    The table below is just for illustratation, not related with the images
+    shown below it
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 02:51:09
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-25_02-51-09.png]]
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 02:51:19
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-25_02-51-19.png]]
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 02:51:42
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-25_02-51-42.png]]
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 02:51:59
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-25_02-51-59.png]]
+
+*** issue of PLA
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 02:53:23
+    [[file:Perceptron Hypothesis Set/screenshot_2018-06-25_02-53-23.png]]
+
+*** fun time: intuition of *correct*
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:14:45
+    [[file:Perceptron Learning Algorithm (PLA)/screenshot_2018-06-25_06-14-45.png]]
+
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:15:07
+    [[file:Perceptron Learning Algorithm (PLA)/screenshot_2018-06-25_06-15-07.png]]
+
+
+    we see the updating formula:
+
+    $sign(w_t^Tx_n)\neq{ y_n }, w_{t+1}= w_t+y_nx_n$
+
+    we multiply both left and right by $y_n[*****]x_n$, we can get:
+
+    $y_nw_{t+1}x_n= y_nw_tx_n+y_ny_nx_nx_n$
+
+    because $y_ny_nx_nx_n \geq 0$, so:
+
+    $y_nw_{t+1}x_n\geq y_nw_tx_n$
+
+    If we think $ywx(=y*\hat{y})$ as the degree of how same the true and
+    prediction, this formula can give us the confidence that every iteration we
+    do better than before.
+
+
+    $y_nW_{t+1}^TX_n \geq y_nW_t^TX_n$
+
+    #+BEGIN_EXAMPLE
+    这个式子很神奇，说明什么，仔细分析：
+    如果 yn = -1，WtXn <0, 那么根据式子，Wt+1Xn 比之前更’负‘。
+    如果 yn = -1，WtXn >0, 那么根据式子，Wt+1Xn 比之前减小。
+    如果 yn= 1,     WtXn >0, 那么根据式子，Wt+1Xn 比之前更’正‘。
+    如果 yn= 1,     WtXn <0, 那么根据式子，Wt+1Xn 比之前增大。
+
+    所以这个不等式就是从数学角度告诉我们：
+    修正之后，结果更好。对的更对，错的会改。
+    #+END_EXAMPLE
+* Guarantee of PLA
+  no mistake eventually if linear separable
+*** *linear separability*                                        :ML_CONCEPT:
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 03:59:42
+    [[file:Guarantee of PLA/screenshot_2018-06-25_03-59-42.png]]
+
+*** PLA fact: wt aligned with wf                                       :MATH:
+    证明：wt+1*wf 的值会越来越大
+
+    - wf is the normal vector of the perfect(or called the target) hyperplane;
+    - wt is the w on t-th iteration;
+
+    这里是说，如果存在这样一条直线可以完美的应用在数据集 D 上，那么这些点到这个
+    直线的距离（乘以 y 可以去掉正负号）一定是 > 0 的. 求出其中距离最小的点.
+
+    这里通过内积结果证明： wt 确实在 逐渐向 wf 靠近，但没有考虑内积结果也会受到
+    两个向量的大小影响，而我们希望得到的是向量方向的变化。
+
+    这里 $w_f$ 是什么？ $w_f$ 是 f (here simple speaking, you can think f is the
+    line of funtion *f*)的法向量。 这里一定注意，这个数学知识点被我遗忘了。 然后，
+    内积表示投影，所以这里 $w_f^Tx_n$ 表示的就是 xn 在 f 函数（这里是直线）法向
+    量上的投影，也就是点到函数（直线）的距离。
+
+    这里使用的都是很“自然而然”的思想： 我想知道 wf（标准结果f） 与 wt（近似结果g）
+    是在逐渐接近还是远离。这个‘朴实’的想法，可以通过内积来实现： 比较 wfwt+1 与
+    wfwt 即可。结果是wf与wt+1 的内积越来越大，但内积变大有两个因素影响，角度和大
+    小，我们希望获得关系角度变小的证据。以此说明 wf 与 wt 在更接近。这个想法，可
+    以通过求 wt+1 的模来找出 wt+1 的模与 wt 的模的关系。
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 03:59:57
+    [[file:Guarantee of PLA/screenshot_2018-06-25_03-59-57.png]]
+
+*** the essence of wx                                                 :YIDDI:
+    ax+b=y
+
+    1. ax+b-y=0 forms a line in x-y axis space, point is (xi,yi)
+
+    2. the normal vector(法向量) of ax+b-y is vector (a,-1)
+
+    3. we can compute distance between each points(xi,yi) in x-y axis space and the
+       line(or hyperplane) by ~each point dot normal vector of this line~. because
+       normal vector is the othogonal vector to this line(法向量表垂直), and dot
+       means mapping this vector on the direction of othogonal vector(内积表投射).
+       this is the distance.
+
+    the formula in this ppt says almost the same thing:
+
+    ===> if we see x as x0 y as x1
+
+    1. (w0,w1) dot (x0, x1) = 0  form a line in x0-x1 axis space
+
+    2. the normal vector is (w0, w1), the ~w~.
+
+    3. we can compute distance between each point (xi, xj) to the line
+
+    内积是投射， 内积是向量相似度。
+
+    $wx$ for $x \in dataset$ 的本质是：
+    1. 计算数据集中每个点 $[x_0, x_1, x_2, ..., x_d]$ 到超平面 $wx$ (这里x是函数变量) 的距离.
+    2. 是两个向量的相似度（投影）
+    3. wt 的本质是 normal vector of separate hyperplane
+    4. all we want is just a *better normal vector*
+
+*** PLA fact: wt grows too slow                                        :MATH:
+    证明：wt+1 * wf 的值变大，更多贡献来自于 wt+1 方向向 wf 靠近，而不是 wt+1 的长度.
+
+    这里来验证，内积增加是不是因为从 Wt 到 Wt+1 时长度发生的变化，如果不是那就可
+    以说明 Wt+1 比 Wt 在方向上更靠近最终目标 Wf.
+
+    $w_{t+1} = w_t + y_{n(t)}*x_{n(t)}$
+
+    这里通过对 wt+1 取模，来证明虽然 wt 确实在向 wf 靠近，但只有在遇到错误的点时
+    才会靠近，而且靠近的幅度小于【最远的xn的绝对值】，因为PLA算法 w 是按照 x 来
+    自我更新的。 所以，wt wf 内积变大更多的是由于 wt 方向上靠近 wf。
+
+    最远的那个点，这里强调最远，是为了证明 wt 在大小上的更新幅度也不过仅此而已。
+    由于 yn 的绝对值仍然是1，所以 wt 的更新量最多也就是【最远的xn的绝对值】，注
+    意去掉平方。
+
+    如果想直接排除掉向量长度增加对内积的影响，就直接正规化两个向量，然后做内积最
+    后得到，这个内积--靠近程度，会随着迭代次数的增加不断增加，直到为 1 --- 重合.
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 04:01:30
+    [[file:Guarantee of PLA/screenshot_2018-06-25_04-01-30.png]]
+
+    通过上面两个式子可以证明： wt 与 wf 在以大于 sqrt(T)*constant的速度在靠近。
+
+*** fun time
+    这里 R 也叫做半径，表示以原点为圆心，画一个可以涵盖所有点的圆。 这里的 rou，
+    是我们要求的那个【标准答案函数】的那条线的法向量与每个点的最小内积，也就是所
+    有点到这条线的最小距离
+
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:25:45
+    [[file:Guarantee of PLA/screenshot_2018-06-25_06-25-45.png]]
+
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:26:00
+    [[file:Guarantee of PLA/screenshot_2018-06-25_06-26-00.png]]
+* Non-Separable Data
+  hold somewhat ‘best’ weights in pocket
+*** more about PLA
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 04:01:57
+    [[file:Non-Separable Data/screenshot_2018-06-25_04-01-57.png]]
+
+*** learning with noisy data
+    有噪点，就可能是非线性可分的
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:28:17
+    [[file:Non-Separable Data/screenshot_2018-06-25_06-28-17.png]]
+
+*** line with noise tolerance
+    基本思想，是从所有的 W 中选取分错点最少的 W 作为最后的 g，但这是一个 NP-hard
+    问题，也就是说在polynomial时间复杂度 内无法完成的。
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:29:11
+    [[file:Non-Separable Data/screenshot_2018-06-25_06-29-11.png]]
+    argmin 是返回指定参数值符号。 他仍然是最小化，但是整个式子返回的是【使得整个
+    式子最小的w】 这两个符号, boolean 括号 和 argmin 在机器学习领域非常常用。
+
+    这个类似中括号的符号是 boolean 符号。 表示里面的判断为真时，记1，否则记0.
+
+*** pocket algorithm                                                   :ALGO:
+    利用 greedy alogrithms 思想， 指定一个循环次数，然后不断检测和改进 始终保存
+    最好的那一个，放在 pocket ， 所以也叫 pocketPLA .
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:29:37
+    [[file:Non-Separable Data/screenshot_2018-06-25_06-29-37.png]]
+
+*** fun time
+    很显然，PLA是只要检测第一个错误点， 然后去修正Wt即可。而 pocketPLA 是 随机选一个
+    错误点，然后修正Wt, 到这里都是差不多的，但下一步需要比较 Wt+1 和 Wt 谁更好---谁
+    的错误点少，这就多了一层检测错误点数量的循环。所以 pocketPLA 肯定更慢。
+
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:29:50
+    [[file:Non-Separable Data/screenshot_2018-06-25_06-29-50.png]]
+
+
+    #+DOWNLOADED: /tmp/screenshot.png @ 2018-06-25 06:30:02
+    [[file:Non-Separable Data/screenshot_2018-06-25_06-30-02.png]]
+
+* PLA summary
+1. good or bad w: $y_n \cdot \hat{y_n}(=w \cdot x_n) < 0$
+2. update w: 向量加减法引起的旋转
+3. what is the w_best: the geometric meaning of $wx_n$
+4. prove wt+1 becomes more and more closer to w_best (due to change in direction)
+5. within how many steps the PLA will stop.
+
+* pocket PLA summary
+1. find the w who 100% correctly separating (not suit for non-linear separable
+   dataset)
+2. find the w who separate training dataset incorrectly least (NP-hard)
+3. within limit iterations, find the w who separate training dataset incorrectly
+   least

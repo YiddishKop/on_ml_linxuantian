@@ -1,0 +1,94 @@
+#+TITLE: lec-04 Feasibility of Learning
+
+这一课基本是通过概率分析的角度(Hoeffding's inequality)来阐明为什么需要 *验证集*,
+verfication set 他不同于训练集, 只是针对单独的一个 h 进行验证，所以相对的就没有
+ML 模型中的算法和 Hypothesis Set, 而是只有一个 h。
+
+- h 就相当于取几个样本;
+- f 就相当于罐子;
+- f != h 就是黄色;
+- f = h 就是蓝色;
+
+所以可以通过样本中的黄球数量来估算出罐子中的黄球数量
+
+* Learning is Impossible?
+absolutely no free lunch outside D
+
+*** a learning puzzle
+*** two controversial answers
+*** a simple binary classification problem
+*** no free lunch
+*** fun time
+* Probability to the Rescue
+probably approximately correct outside D
+*** inferring something unknown
+*** statics 101: inferring orange probability
+*** possible vs. probable
+    what does in-sample say about out-of-sample.
+*** *hoeffding's inequality*                                           :MATH:
+    Hoeffding's inequality give us the confidence that we surely can learn
+    something from dataset(the sample).
+
+    Hoeffding's inequality says the difference between *fraction in sample* and
+    *probability in global* is not so much.
+    - difference is inverse propotion to $\epsilon$ (tolerance)
+    - difference is inverse propotion to $N$ ( sample size ).
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-26 09:11:02
+[[file:Probability to the Rescue/screenshot_2018-06-26_09-11-02.png]]
+
+what this Hoeffding's Inequality says:
+
+1. 注意这里的 N 是 sample size，对应到机 器学习也就是我们的数据集大小
+
+2. 这个公式的表达的意思是： *坏事发生的概率很小* 。 v 与 u 的差距大于 $\epsilon$
+   的概率非常小，小于某个（与 N 成反比的）数值.
+
+3. Hoeffding inequality give us the confidence: 取樣出來的結果會很接近真實情況，
+   是因為 Hoeffding's Inequality 這個定理。
+   - 當 N 很大，也就是我們取樣的数目很大（数据集较大），那 v - u 就會是一個很小
+     的數字，也就是我們預估的 g 跟真實的 f 的差距很小。
+   - 當 ε 很大，也就是我們可以容忍的誤差很大的話，那當然我們就可以很容易地說 g
+     跟真實的 f 的差距很小。
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-26 09:33:26
+[[file:Probability to the Rescue/screenshot_2018-06-26_09-33-26.png]]
+
+*** fun time
+* Connection to Learning
+verification possible if Ein(h) small for fixed h
+*** connection to learning
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-26 09:40:51
+[[file:Connection to Learning/screenshot_2018-06-26_09-40-51.png]]
+
+把颜色想象成一种关于球的函数映射，
+h(x) = f(x) and h(x) != f(x) 也是关于 x 的函数映射。
+- h(x) = f(x) ==> green marble
+- h(x) != f(x) ==> yellow marble
+
+what we want is by count the *fraction* of ~h(x) = f(x)~, we can say that when
+apply h on new comming data points, we have the same *probability*.
+
+This will give information about how good our learning model ~h~ is.
+
+And give us some confidence when we apply our model to unknown data.
+
+That is we surely learned something.
+
+*** added components
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-26 09:40:32
+[[file:Connection to Learning/screenshot_2018-06-26_09-40-32.png]]
+*** the formal guarantee
+
+*** verification of one h
+
+*** verification flow
+
+* Connection to Real Learning
+learning possible if |H| finite and Ein(g) small
+*** multiple h
+*** coin game
+*** bad sample and bad data
+*** bad data for many h
+*** bound of bad data
+*** the statistical learning flow

@@ -1,0 +1,40 @@
+#+TITLE: course summary
+* foundation
+** when can learn
+   - learning, answer yes or no
+   - types of learning
+   - feasibility of learning
+   - training vs. testing
+   - theory of generalization
+   - vc dimension
+   - noise and error
+** how can learn
+   - linear regression
+   - logistic regression
+   - linear model for classification
+   - non linear transformation
+** how learn better
+   - hazard of overfitting
+   - regularization
+   - validation
+   - learning principles
+
+* technical
+** embedding numerous features: kernel models
+   - kernel modes
+   - dual svm
+   - kernel svm
+   - soft margin svm
+   - kernel logistic regression
+   - sv regression
+** combining predictive features: aggregation models
+   - aggregation models
+   - adaptive boosting
+   - decision tree
+   - random forest
+   - GBDT
+** distilling implicit features: extraction models
+   - NN
+   - deep learning
+   - radial basis function network
+   - matrix factorization

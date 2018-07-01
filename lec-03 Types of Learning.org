@@ -1,0 +1,28 @@
+#+TITLE: lec-03 Types of Learning
+* learning with different output space Y
+*** more binary classification problem
+*** multiclass classification: coin recognition problem
+*** regression: paritent recovery prediction problem
+*** structured learning: sequence tagging problem
+*** mini summay
+*** fun time
+* learning with different data label yn
+*** supervised: coin recognition with yn
+*** unsupervised: coin recognition without yn
+*** semi-supervised: coin recognition some yn
+*** reinforcement learning
+*** mini summay
+*** fun time
+* learning with different protocol f=>(xn,yn)
+*** batch learning: coin recognition
+*** more batch learning problems
+*** online learning: spam filter that 'improves'
+*** active learning: learning by 'asking'
+*** mini summay
+*** fun time
+* learning with different input space X
+*** more on concrete features
+*** raw features: digit recognition problem
+*** abstract features: rating prediction problem
+*** mini summay
+*** fun time

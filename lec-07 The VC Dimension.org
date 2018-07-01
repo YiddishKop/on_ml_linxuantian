@@ -1,0 +1,33 @@
+#+TITLE: lec-07 The VC Dimension
+* Definition of VC Dimension
+
+maximum non-break point
+*** recap: more on growth function
+*** recap: more on vapnik-chervonenkis(VC) bound
+*** vc dimension
+*** the four vc dimensions
+*** vc dimension and learning
+*** fun time
+* VC Dimension of Perceptrons
+dVC(H) = d + 1
+*** 2d PLA revisited
+*** vc dimensions of perceptrons
+*** extra fun time
+*** dvc >= d+1
+*** can we shatter X
+*** extra fun time
+*** dvc <= d+1
+*** fun time
+* Physical Intuition of VC Dimension
+dVC ≈ #free parameters
+*** degrees of freedom
+*** two old friends
+*** M and dvc
+*** fun time
+* Interpreting VC Dimension
+loosely: model complexity & sample complexity
+*** vc bound rephrase: penalty for model complexity
+*** the vc message
+*** vc bound rephrase: sample complexity
+*** looseness of vc bound
+*** fun time

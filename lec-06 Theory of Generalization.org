@@ -1,0 +1,29 @@
+#+TITLE: lec-06 Theory of Generalization
+* Restriction of Break Point
+  break point ‘breaks’ consequent points
+*** the four break points
+*** restriction of break point
+*** fun time
+* Bounding Function: Basic Cases
+B(N; k) bounds mH(N) with break point k
+*** bounding function
+*** table of bounding function
+*** fun time
+* Bounding Function: Inductive Cases
+B(N; k) is poly(N)
+*** estimating B(4,3)
+*** achieving dichotomies of B(4,3)
+*** reorganized dichotomies of B(4,3)
+*** estimating part of B(4,3)
+*** putting it all together
+*** bounding function: the theorem
+*** the three break points
+*** fun time
+* A Pictorial Proof
+mH(N) can replace M with a few changes
+*** bad bound for general H
+*** step 1: replace Eout by E'in
+*** step 2: decompose H by kind
+*** step 3: use hoeffding without replacement
+*** that's all
+*** fun time

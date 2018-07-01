@@ -1,0 +1,23 @@
+* the huge map of ML model                                            :YIDDI:
+I have huge dataset of approval credit -------> if a new customer come in, should a give credit card or not.
+
+dataset with label(give or not)        -------> a new data come in, how to classify it.
+
+build hypothesis set, may introduce some parameters(flexible and unknown variable).
+- should use the parameter(the flexible and unknown variables) which is easy to optimize
+- should complex enough to cover the data's hidden pattern, and simple enough to
+  guarantee the generalize ability(not the 'couple lover' only for the dataset).
+
+using a proper algo, to reduce the range of these new parameters step by step,
+until get the specified values. By alternative thinkings, we select a better
+function(give parameters some initial values, and better values, and more better
+values, and ...) from hypothesis, step by step, until find the best values.
+
+- how we define the 'better' --- maybe accuracy by applying function on dataset
+- how we define bad and good parameter --- by find the hidden math
+  representation or physical meannings of original problem, maybe more related
+  to linear algobra.
+- how we update parameter
+- when we stop.
+
+then we get a function(or a distribution), from which we can give the input data an output label.

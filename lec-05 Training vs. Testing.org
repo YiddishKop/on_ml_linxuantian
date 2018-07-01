@@ -1,0 +1,360 @@
+#+TITLE: lec-05 Training vs. Testing
+* Recap and Preview
+*** recap: the statistical learning flow
+*** two central questions
+*** trade-off on M
+*** preview
+*** fun time
+* Effective Number of Lines
+*** where did M come from
+    from Hoefdding to P(D BAD on hi) to P(D BAD on H)
+
+    you know that P(D BAD on hi) for hi is fixed, it's just another expression of Hoefdding.
+
+    ~hi(x) != f(x)~ is the analog of the method we color the marbles.
+
+    we know that 'BAD D on hi' is hi apply on D will give a huge different from apply it on global data.
+
+    that is BAD D may give the classification of D, we say, [+++++++++], this maybe actually [+-+-++--] on global.
+
+    so, what is 'BAD' it's just a *special* classification on D
+
+    this give us an ituition that: if hi and hj can give same classification on D, they probably have the same P(D BAD on hi)
+
+    but when we compute the Hoefdding inequality on Hypotheses set(not a fixed h), we use bayes and plus all P(D BAD on hi) together, it's redundant.
+
+    that's essentially we count in the same thing multiple times.
+
+    so we should count NOT the number of h, BUT the kinds of h(the same kind of h give the same classification on D)
+
+    then 3 important concept enter:
+    1. dichotomy: one kind of classification on D
+    2. shatter: whether or no a Hypotheses set can cover all classifications of a D
+    3. breakpoint: the least number of D, which a model can not shatter.
+
+    1 important symbol enter:
+    - $m_H(D)$ : given a D and a hypotheses set H, the largest number of classification H can give.
+
+    remember that:
+    so we should count NOT the number of h, BUT the kinds of h(the same kind of h give the same classification on D)
+
+    now we can replace the number M with the number of kinds(classifications) $m_H(D)$
+
+    $Hoeffding: P(|v-\mu|>\epsilon) \leq 2exp(-2 \epsilon^2 N)$
+
+    $Hoeffding: P(|E_{in}(h)-E_{out}(h)|>\epsilon) \leq 2exp(-2 \epsilon^2 N)$
+
+    $Hoeffding: P(|D \ \ BAD \ \ on \ \ h|>\epsilon) \leq 2exp(-2 \epsilon^2 N)$
+
+    $Hoeffding: P(|D \ \ BAD \ \ on \ \ H|>\epsilon) \leq 2Mexp(-2 \epsilon^2 N)$
+
+    $Hoeffding: P(|D \ \ BAD \ \ on \ \ H|>\epsilon) \leq 2m_H(D)exp(-2 \epsilon^2 N)$
+
+
+    and we know that $m_H(D)$ is related to the N (size of D), what we want to guarantee is we don't like $m_H(D)$ grow too fast as N grows.
+
+    ONLY in this way we can safely apply our ml algorithm on D to choose, without worry about the D BAD on some h.
+
+
+
+    then we can the new concept instead of the old one, this will give us the convenience to express.
+
+    1 *kind of h* (maybe include many hs) ===> 1 kind of *classification* ===> 1 *dichotomy*
+
+
+    | old                                                     | new                                                          |
+    |---------------------------------------------------------+--------------------------------------------------------------|
+    | h_kind(D)                                               | 1 dichotomy                                                  |
+    | H(D) ,for one layout of dataset                         | 1 dichotomy set                                              |
+    | H(D) ,for different layouts of dataset                  | many dichotomy set                                           |
+    | mH(D) = max(H(D).size), for the ideal layout of dataset | the dichotomy sett which has the largest size of dichotomies |
+
+    now when we say shatter:
+    - for old: H can supple all the classifications of N points
+    - for new: dichotomy set can supple all the dichotomies of N points
+
+
+    we now know that, we have reduce the M to mH(N)(or called mH(D)), but how we find the mH(N), for simple Hypotheses sett like positive ray, positive interval, convex set, we can compute mH(N) by permutation and combination.
+
+    But for some complex Hypotheses sett, we can not get the mH(N) in this way, like PLA.
+
+    we need another method.
+
+    breakpoint ENTER.
+
+    we find that there is a special number, called breakpoint, he is another measure of the ability of Hypotheses sett --- the least number of data points H can not cover.
+
+    when size of dataset increase to a special number, there must exist an classification which the Hypotheses sett can not cover, this special number is the breakpoint number.
+
+    when size of dataset increase to a special number, there must exist an dichotomy which is not included in the largest dichotomy sett the Hypotheses sett can give, this special number is the breakpoint number.
+
+    different hypotheses sett has different ability and different breakpoint.
+
+    if we can find some relationship or some mathematical formula between
+    *breakpoint* and *mH(N)*, we can get mH(N) in an indirectly way.
+
+
+    by this discription of breakpoint:
+
+    when *size of dataset* increase to a special number, there must exist an
+    *dichotomy* which is not included in the *largest dichotomy sett* the
+    Hypotheses sett can give, this special number is the breakpoint number.
+
+    we can use it in an inverse way, if given the breakpoint, and size of
+    dataset, if the number of dichotomies the hypotheses sett supply make any
+    dichotomies of the special number(=breakpoint) of points be covered, this
+    will break the definition of breakpoint, by this way we can find the number
+    of largest dichotomy set.
+
+    this is a annoy discription, but you should understand it.
+
+    as we refer to that before, we don't know mH(N), but we can know breakpoint
+    easily, essentially mH(N) and breakpoint are both some measures of the
+    ability of Hypotheses set. If we can get some information of mH(N) from
+    breakpoint, that' good!
+
+    How!
+
+    the break point and size of dataset determin the upbound of mH(N), if mH(N)
+    exceed this upbound this means mH(N) violate the breakpoint, breakpoint is
+    the measure of ability of Hypotheses sett, this means that you exceed the
+    ability of Hypotheses sett, that's impossible.
+
+
+    N + breakpoint ---> mH(N)
+
+    this is why we need the strange discription of breakpoint.
+
+    How we can get some information mH(N) by N and breakpoint.
+
+    this lecture introduce a simple way:
+
+    N=1, breakpoint=2, mH(N) ==>
+    N=2, breakpoint=2, mH(N) ==>
+    N=3, breakpoint=2, mH(N) ==>
+    N=4, breakpoint=2, mH(N) ==>
+
+    $B(N,k) = 2^N, \ for \ N<k$
+    $B(N,k) = 2^N-1, \ for \ N=k$
+    $B(N,k) = 2^N, \ for \ N>k$
+
+    $B(N,k) \leq B(N-1,k) + B(N-1,k-1)$
+    $B(N,k) \leq \sum_{i=0}^{k-1}c(N,i), \ a \ poly(N)$
+
+    refer to what we said before,
+
+    the break point and size of dataset determin the upbound of mH(N), if mH(N)
+    exceed this upbound this means mH(N) violate the breakpoint, breakpoint is
+    the measure of ability of Hypotheses sett, this means that you exceed the
+    ability of Hypotheses sett, that's impossible.
+
+    so we truely can get some information about the $m_H(N)$, he has a upbound
+    which related with N and breakpoint(k)
+
+    original: $m_H(N) \leq 2^N$
+    now     : $m_H(N) \leq B(N,k) \leq \sum_{i=0}^{k-1}c(N,i), \ a \ poly(N)$
+
+
+    now we can say that, we have confidence that if we can safely choose h from H, without worry about the BAD DATA.
+
+    we don't finish yet, you know that ,this formula say that the error rate we
+    get from the dataset can has a high probability reflect the true error rate
+    in global.
+
+    Truely that we get it ,but it's like a moon in the sky, we can not use it to
+    get anything, because it's for the Eout. Can it give me some hint when do it
+    in lab instead of unrealistic for global.
+
+    yes.
+
+    from hoefdding to vc-bound
+
+    hoefdding is the beautiful snow white; vc-bound is the girl we can love.
+
+    $hoeffding: \ \ P( (E_{ in }(h) - E_{ out }(h)) > \epsilon ) \leq 2m_H(N)exp(-2\epsilon^2N)$
+    $vc-bound: \ \ P( (E_{ in }(h) - E_{ out }(h)) > \epsilon ) \leq 4m_H(2N)exp(-\frac{1}{8}\epsilon^2N)$
+    and
+
+    the prove is skipped for the reason that's too complex
+
+    combine with what we refer before:
+
+    $m_H(N) \leq B(N,k) \leq \sum_{n=1}^{k-1}c(N,i) \leq O(N^{k-1})$
+
+
+
+    breakpoint go on further, we give a name to ~breakpoint - 1~ : vc dimension
+
+    vc dimension = dvc = breakpoint - 1
+
+    by the footprint of:
+    | hypotheses set | breakpoint | dvc |
+    |----------------+------------+-----|
+    | 1D perceptron  |          3 |   2 |
+    | 2D perceptron  |          4 |   3 |
+    | 3D perceptron  |          ! |   ! |
+
+    maybe we can find that:
+    dvc = d + 1
+
+    this is a breakthrough discovery, that
+    1. dvc = breakpoint - 1
+    2. dvc = d + 1
+
+    we can prove this is right! (skipped here)
+
+    then we can easily find the 4 important functionality of dvc:
+    1. (inherited from breakpoint) measure the $m_H(N)(\leq O(N^{k-1})$
+    2. (inherited from breakpoint) measure the ability of Hypotheses set:
+       1. dvc is the biggest number of data points you can shatter
+       2. shatter means you can give all dichotomies(all classifications)
+       3. every dichotomy is produce by h, every h is determined by w.
+       4. w has the dimension: d + 1 = dvc.
+    3. trade off between the ability of Hypotheses set and the ability of generalization.
+       1. gen.error.
+       2. the penalty of model complexity.
+    4. estimate if we want to learn something, how many data points(size of dataset) do we need.
+       1. ~10 * dvc~ is enough
+
+
+
+    vc bound 在有 noise 的情况下是否还 work？
+
+    x, y both can include noise!
+
+    想象一种颜色变来变去的弹珠（ probabilistic (noisy) marbles）每过一段时间就按照某
+    种概率变成另一种颜色。如何表示这个会变色的机率呢？ --- P(y | x) ：
+    一样的动作：抽取弹珠，但抽出来的瞬间就记录这个弹珠的颜色。
+
+    原来的模型是 deterministic：
+    x ~ P(x); y ?= h(x), for y = f(x)
+    亦即，一旦 x 确定， h(x), f(x) 也都确定了，如此弹珠颜色也就确定了
+
+    现在的模型是 probabilistic：
+    x ~ P(x); y ?= h(x), for y ~ P(y|x)
+    ===> (x,y) ~ P(x,y)
+    亦即， x 确定之后， h(x)就确定了， y 没法立即确定， 需要按照一定的条件概率生
+    成，然后弹珠颜色才确定。
+
+    如此我們就可以把原來 target function 模型中的無noise情況，看成是 *完全沒有低
+    概率事件* 。
+
+    p(y|x) = 1, for y=f(x)
+    p(y|x) = 0, for y!=f(x)
+
+    其余所有的动作都一样，衡量的方式也一样，一路走下来仍然建立在【预测弹珠颜
+    色】的基础理论之上，所以 vc 仍然适用新模型
+
+    这里 P(x) 和 P(y|x) 为什么是同一个概率分布？
+    之前讨论过，用抽取的弹珠类比，当然必须【是这把弹珠的颜色比例】
+
+    这就不叫 target function f(x), 而是叫做 target distribution P(y|x)
+
+    P(y|x)代表什么，表示样本是x的时候，标签为y的概率是多少，我们一般选取最高的哪
+    一个，有选择就有牺牲，nosie level 就代表这个最好的选择上的noise。
+
+    這個 noise 就是說，如果某个样本的标签是( eg. x: taiwai y: 'O' country; 'X'
+    not country) ) , it's no doubt that, taiwan should has a label X, but
+    because we have noise in our dataset, and we get the label NOT by a
+    deterministic function, BUT a sampling, 那麼他仍然有可能會出現其他值（eg. O），
+    我就可以近似的將這些 X 看成是雜訊。
+
+
+
+    *学习目标现在就要变了* ， 因爲：
+
+    ---- 將 noise 和 低概率事件 聯系起來。
+    ---- 高概率事件： true_x
+    ---- 低概率事件： noise_x
+    ---- 高概率事件： true_y
+    ---- 低概率事件： noise_y
+
+    ---- sample_x = (高概率事件 + 低概率事件) = （true_x + noise_x）
+    ---- sample_y = (高概率事件 + 低概率事件) = （true_y + noise_y）
+
+    你不能再要求，預測值完全等於實際值（WRONG: pred_y = sample_y）, 因爲現在你看 到的數據集中的標籤(label: sample_y)中包含noise，我們應該做到的是：pred_y = true_y，但 [ true_y ] 現在僅僅是「高概率事件」。
+
+    所以，我們希望：
+
+    對於經常出現的樣本（高概率 x， true_x），我們要讓自己的預測與該樣本經常出現的標 籤 (高概率 y of this x, true_y of this x) 盡量接近。
+
+    we ONLY change the learning target and the way we get y, ALL OTHER things never change , the vc bound use the bin and marbles as demonstration, the same with current scenario.
+
+    so, vc bound also work for noisy dataset.
+
+    Now, we will take a deep step in error measure: how we can say h(x) is similar to f(x), when we don't know what f(x) really is.
+
+    we don't know f(x), we only have input(samples) and output(labels) of f(x), and we want if give these input to our predicted g(x), the output of g(x) should ~similar~ to output of f(x), which is the labels.
+
+    but what is ~similar~, how we numeralization(数值化) the difference between the output of f(x) and g(x).
+
+    this is what's called 'error measure': how to numeralization the difference between the outpu of f(x) and g(x).
+
+    we always use the method called: pointwise error measure, used by all the following lectures.
+
+    for pointwise error measure, two commonly used *numeralization* methods are:
+    - each error(y_pred != label) is fixed: 0 or 1
+    - each error(y_pred != label) is NOT fixed, determin by the distance: sqr(y_pred - label)
+
+    avg.err of 0/1 error:
+
+    $avg.err_{0/1} = \frac{1}{N}\sum_i^Nboolean(y\neq\hat{y})$
+    see each error has a weight $1/N$
+
+    $f(x) = argmax_{y\in{Y}}P(y|x)$
+
+    应该选则 *出现最多次数的（概率最大的）标签* 作为 f(x), 因为他的 error numeralization 会获得最少的 0.
+
+
+    avg.err of square error:
+
+    $avg.err_{square} = E_{y~P(y|x)}[(y - \hat{y})^2]$
+    see each error has a weight $P(x)$
+
+    $f(x)=\sum_{y\in{Y}}y\cdot{P(y|x)}$
+
+    应该选则 *标签加权平均值* 作为 f(x), 因为他的 error numeralization 会获得最少的 sum square distance.
+
+
+    How we compute the error of noisy dataset.
+
+    P(y = 1|x) = 0:2; P(y = 2|x) = 0:7; P(y = 3|x) = 0:1
+
+
+    | input | label(with noise inside) | y_pred=1 |   y_pred=2 | y_pred=3 |  y_pred=1.9 |
+    |-------+--------------------------+----------+------------+----------+-------------|
+    | xxx   |                        1 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        1 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        2 |        1 |          2 |        3 |         1.9 |
+    | xxx   |                        3 |        1 |          2 |        3 |         1.9 |
+    |-------+--------------------------+----------+------------+----------+-------------|
+    |       |            0/1  avg.err: |      0.8 | (best) 0.3 |      0.9 |           1 |
+    |       |         square  avg.err: |      1.1 |        0.3 |      1.5 | (best) 0.29 |
+
+    you see that, the way you numeralize error, determine who is the best precition.
+
+    we'll not prove, but it's truly that: extended VC theory/‘philosophy’ works for most H and err(NOT ONLY for 2-classification without noise).
+
+*** where did uniform bound fail
+*** how many lines are there
+*** how many kinds of lines for three inputs
+*** effective number of lines
+*** fun time
+* Effective Number of Hypotheses
+*** dichotomies: mini-hypotheses
+*** growth function
+*** growth function for positive rays
+*** growth function for positive intervals
+*** growth function for convex sets
+*** fun time
+* Break Point
+*** the four growth functions
+*** break point of H
+*** the four break points
+*** fun time

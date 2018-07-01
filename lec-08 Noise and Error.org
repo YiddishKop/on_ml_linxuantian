@@ -1,0 +1,32 @@
+#+TITLE: lec-08 Noise and Error
+* Noise and Probabilistic Target
+can replace f(x) by P(y|x)
+*** recap: the learning flow
+*** noise
+*** probabilistic marbles
+*** target distribution P(y|X)
+*** the new learning flow
+*** fun time
+* Error Measure
+affect ‘ideal’ target
+*** error measure
+*** pointwise error measure
+*** two important pointwise error measure
+*** ideal mini-target
+*** learning flow with error measure
+*** fun time
+* Algorithmic Error Measure
+user-dependent ==> plausible or friendly
+*** choice of error measure
+*** fingerprint verification for supermarket
+*** fingerprint verification for CIA
+*** take-home message for now
+*** learning flow with algorithmic error measure
+*** fun time
+* Weighted Classification
+easily done by virtual ‘example copying’
+*** weighted classification
+*** minimizing Ein for weighted classification
+*** systematic route: connect Einw and Ein0/1
+*** weighted pocket algorithm
+*** fun time

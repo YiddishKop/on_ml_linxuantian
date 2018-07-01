@@ -1,0 +1,9 @@
+#+TITLE: Lec-9: Linear Regression
+* Linear Regression Problem
+use hyperplanes to approximate real values
+* Linear Regression Algorithm
+analytic solution with pseudo-inverse
+* Generalization Issue
+Eout − Ein ≈ 2(d+1)/N on average
+* Linear Regression for Binary Classification
+0/1 error ≤ squared error

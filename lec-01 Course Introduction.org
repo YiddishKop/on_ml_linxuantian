@@ -1,0 +1,90 @@
+#+TITLE: course design
+
+* key essence of ml: from data to skill
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 10:31:39
+[[file:key essence of ml: from data to skill/screenshot_2018-06-24_10-31-39.png]]
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 10:26:07
+[[file:key essence of ml/screenshot_2018-06-24_10-26-07.png]]
+
+* problems ml can handle: PNDD
+#+BEGIN_EXAMPLE
+1. exists some ‘underlying pattern’ to be learned
+   —so ‘performance measure’ can be improved
+2. but no programmable (easy) definition
+   —so ‘ML’ is needed
+3. somehow there is data about the pattern
+   —so ML has some ‘inputs’ to learn from
+#+END_EXAMPLE
+
+哪些问题适合使用机器学习？
+1. 有一个潜藏的模式，规则和目标;
+2. 暂时不知道怎么编程来定义问题，比如超过个人认知边界的问题，我完全没有一点概念，
+   登陆火星，看火星有没有生命;
+3. 有已经积累下的数据; 作为input。
+
+have Pattern, No Definition, have Data
+适合使用机器学习，先看： ~PNDD~
+
+这里第二条被认为是‘可编程规则的’问题，这样的问题完全不需要通过机器学习来解决。因
+为我有现成的对于‘圆形’ 的数学定义，可以很好的进行编程定义。所以不需要使用ML解决
+
+* applications of ml
+#+BEGIN_EXAMPLE
+1 Food (Sadilek et al., 2013)
+  • data: Twitter data (words + location)
+  • skill: tell food poisoning likeliness of restaurant properly
+2 Clothing (Abu-Mostafa, 2012)
+  • data: sales figures + client surveys
+  • skill: give good fashion recommendations to clients
+3 Housing (Tsanas and Xifara, 2012)
+  • data: characteristics of buildings and their energy load
+  • skill: predict energy load of other buildings closely
+4 Transportation (Stallkamp et al., 2012)
+  • data: some traffic sign images and meanings
+  • skill: recognize traffic signs accurately
+#+END_EXAMPLE
+
+* ml learning model
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 10:36:09
+[[file:definition of ml/screenshot_2018-06-24_10-36-09.png]]
+
+
+学习模型的四个组成部分：
+1. DataSet 是我们的数据集，这个数据集包含两个层面，input and output. 这是已经做
+   出 结果（决定）的‘历史’数据。
+2. f 是一个假想的函数：我假想在这些历史数据对中存在某种规律，把input 映射成 output。
+3. Learning Algo，是我们使用的机器学习算法，也就是机器用什么方式去‘ *理解和解释*
+   ’ 这些 data 以及机器如何 *评价* 已经得到的 hypothesis, 拟合，分类，回归。
+4. Hypothesis, 是机器把按照他理解的方式，所得出的可能的这个映射关系，这些映射关
+   系可能 *未必是公式* ，也可以是 *规则* , 比如 debt > RMB100,00就放贷款。
+
+所以机器学习模型，一般有三个输入:
+1. Dataset
+2. Hypothesis
+3. Algo
+
+* components of learning model
+
+#+BEGIN_QUOTE
+machine learning:
+
+use ~data~ to compute ~hypothesis g~ that approximates ~target f~
+#+END_QUOTE
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-06-24 10:36:09
+[[file:definition of ml/screenshot_2018-06-24_10-36-09.png]]
+
+#+BEGIN_EXAMPLE
+这里一定要注意区分 X,Y,D,A,H,g,f 各自的定义：
+
+- X, 是所有输入的集合;
+- Y, 是我希望得到的目标问题的解的集合（这里就是房贷or不房贷，是/否，0/1）;
+- f, 是我假象的一个真实的映射 f: X -> Y;
+- D, 是历史记录中存在的 （Xn,Yn）pair;
+- A, 是机器学习的算法(算法是指"从函数集中找出最好的那个函数的算法");
+- H, 是通过算法 A 得到的一系列的对 f 的近似函数;
+- g, 是 best one of H
+#+END_EXAMPLE
