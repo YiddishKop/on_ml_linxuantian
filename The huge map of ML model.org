@@ -9,9 +9,10 @@ build hypothesis set, may introduce some parameters(flexible and unknown variabl
   guarantee the generalize ability(not the 'couple lover' only for the dataset).
 
 using a proper algo, to reduce the range of these new parameters step by step,
-until get the specified values. By alternative thinkings, we select a better
-function(give parameters some initial values, and better values, and more better
-values, and ...) from hypothesis, step by step, until find the best values.
+until get the specified values. By alternative thinkings(more practical in ML),
+we select a better function(give parameters some initial values, update with
+better values, and more better values, and ...) from hypothesis, step by step,
+until find the best values.
 
 - how we define the 'better' --- maybe accuracy by applying function on dataset
 - how we define bad and good parameter --- by find the hidden math

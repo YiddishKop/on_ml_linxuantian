@@ -1,0 +1,40 @@
+* Graph of ml foundation
+*** lec 13
+lec 13 how learn better, overfitting, ppt 3/22
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-07-01 17:47:07
+[[file:Graph of ml foundation/screenshot_2018-07-01_17-47-07.png]]
+
+
+lec 13 how learn better, overfitting, ppt 9/22
+
+~learning curve~ 是表述的是:资料量N 和 Ein(h) Eout(h) 的关系图，会有Ein和Eout两
+条线。记住！如果资料量是无限多的，我的Ein和Eout应该是收敛到同一个error值的。
+
+当资料有限(灰色) Ein of this h 会比最终收敛的error值略低，为什么？因为我看到那些
+资料，我可以对他们做一点点optimization的动作，我的函数图像会往那些点靠近一点点。
+
+而此时Eout就会比最终的收敛error值高一点点，为什么？当我的函数图像‘往那些点靠近
+一点点’的时候，对于没看到的点那边，如果那里有noise的话，我就离开了他们大概两倍
+的距离（前几节公式有证明是2倍）。
+
+
+[[file:Graph of ml foundation/screenshot_2018-07-01_17-44-48.png]] [[file:Graph of ml foundation/screenshot_2018-07-01_17-45-00.png]]
+
+这个就是说明，当你的数据集很小（灰色区域），一定要用简单的learning-model,简单
+HypothesisSet，这样能更好的预测。用的模型太负责，收之桑榆，失之东隅。你每往一些
+点(in training dataset)那靠近1步，就远离另一些点(out training dataset)10步。
+
+
+
+lec 13 how learn better, overfitting, ppt 14/22
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-07-01 21:31:05
+[[file:Graph of ml foundation/screenshot_2018-07-01_21-31-05.png]] [[file:Graph of ml foundation/screenshot_2018-07-01_21-31-18.png]]
+
+display the overfitting of two variables
+
+overfitting measure formula: Eout(h10) - Eout(h2), the bigger difference, the deeper color.
+
+1st graph: fix order of target fn, compute the overfitting measure influenced by (noise level, N)
+2nd graph: fix noise level of dataset, compute the overfitting measure influenced by (order of target fn, N)

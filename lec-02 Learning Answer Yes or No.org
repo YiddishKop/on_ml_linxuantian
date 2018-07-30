@@ -370,9 +370,64 @@
 4. prove wt+1 becomes more and more closer to w_best (due to change in direction)
 5. within how many steps the PLA will stop.
 
+
+#+BEGIN_SRC python :results output
+from numpy import *
+
+def naive_pla(datas):
+    w = datas[0][0]
+    iteration = 0
+    while True:
+        iteration += 1
+        false_data = 0
+
+        for data in datas:
+            t = dot(w, data[0])
+            if sign(data[1]) != sign(t):
+                error = data[1]
+                false_data += 1
+                w += error * data[0]
+        print 'iter%d (%d / %d)' % (iteration, false_data, len(datas))
+        if not false_data:
+            break
+    return w
+#+END_SRC
+
 * pocket PLA summary
 1. find the w who 100% correctly separating (not suit for non-linear separable
    dataset)
 2. find the w who separate training dataset incorrectly least (NP-hard)
 3. within limit iterations, find the w who separate training dataset incorrectly
    least
+
+#+BEGIN_SRC python :results output
+import numpy as np
+
+def pocket_pla(datas, limit):
+    ###############
+    def _calc_false(vec):
+        res = 0
+        for data in datas:
+            t = np.dot(vec, data[0])
+            if np.sign(data[1]) != np.sign(t):
+                res += 1
+        return res
+    ###############
+    w = np.random.rand(5)
+    least_false = _calc_false(w)
+    res = w
+
+    for i in xrange(limit):
+        data = random.choice(datas)
+        t = np.dot(w, data[0])
+        if np.sign(data[1]) != np.sign(t):
+            t = w + data[1] * data[0]
+            t_false = _calc_false(t)
+
+            w = t
+
+            if t_false <= least_false:
+                least_false = t_false
+                res = t
+    return res, least_false
+#+END_SRC

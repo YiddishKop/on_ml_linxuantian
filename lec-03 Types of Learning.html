@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-07-18 三 09:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>lec-03 Types of Learning</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="yiddi" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">lec-03 Types of Learning</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgfd7cf48">1. learning with different output space Y</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org48c3534">1.0.1. more binary classification problem</a></li>
+<li><a href="#org9e58d58">1.0.2. multiclass classification: coin recognition problem</a></li>
+<li><a href="#org0f4d1c8">1.0.3. regression: paritent recovery prediction problem</a></li>
+<li><a href="#org0dbe46d">1.0.4. structured learning: sequence tagging problem</a></li>
+<li><a href="#org0d93e30">1.0.5. mini summay</a></li>
+<li><a href="#orgdcd605f">1.0.6. fun time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1cd49bb">2. learning with different data label yn</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org64763f9">2.0.1. supervised: coin recognition with yn</a></li>
+<li><a href="#orge513e70">2.0.2. unsupervised: coin recognition without yn</a></li>
+<li><a href="#orge9eb13a">2.0.3. semi-supervised: coin recognition some yn</a></li>
+<li><a href="#orgc599ef8">2.0.4. reinforcement learning</a></li>
+<li><a href="#org5d78869">2.0.5. mini summay</a></li>
+<li><a href="#org3809b0d">2.0.6. fun time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgf691080">3. learning with different protocol f=&gt;(xn,yn)</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org38f7ffa">3.0.1. batch learning: coin recognition</a></li>
+<li><a href="#org1eb0c95">3.0.2. more batch learning problems</a></li>
+<li><a href="#org515fa06">3.0.3. online learning: spam filter that 'improves'</a></li>
+<li><a href="#org09d3a84">3.0.4. active learning: learning by 'asking'</a></li>
+<li><a href="#orgc4a83ef">3.0.5. mini summay</a></li>
+<li><a href="#org59248c9">3.0.6. fun time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org45dd2fb">4. learning with different input space X</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org157d997">4.0.1. more on concrete features</a></li>
+<li><a href="#orgab67a51">4.0.2. raw features: digit recognition problem</a></li>
+<li><a href="#orga77b8d4">4.0.3. abstract features: rating prediction problem</a></li>
+<li><a href="#org583d8d9">4.0.4. mini summay</a></li>
+<li><a href="#org1d668bd">4.0.5. fun time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="orgfd7cf48" class="outline-2">
+<h2 id="orgfd7cf48"><span class="section-number-2">1</span> learning with different output space Y</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="org48c3534" class="outline-4">
+<h4 id="org48c3534"><span class="section-number-4">1.0.1</span> more binary classification problem</h4>
+</div>
+<div id="org9e58d58" class="outline-4">
+<h4 id="org9e58d58"><span class="section-number-4">1.0.2</span> multiclass classification: coin recognition problem</h4>
+</div>
+<div id="org0f4d1c8" class="outline-4">
+<h4 id="org0f4d1c8"><span class="section-number-4">1.0.3</span> regression: paritent recovery prediction problem</h4>
+</div>
+<div id="org0dbe46d" class="outline-4">
+<h4 id="org0dbe46d"><span class="section-number-4">1.0.4</span> structured learning: sequence tagging problem</h4>
+</div>
+<div id="org0d93e30" class="outline-4">
+<h4 id="org0d93e30"><span class="section-number-4">1.0.5</span> mini summay</h4>
+</div>
+<div id="orgdcd605f" class="outline-4">
+<h4 id="orgdcd605f"><span class="section-number-4">1.0.6</span> fun time</h4>
+</div>
+</div>
+<div id="org1cd49bb" class="outline-2">
+<h2 id="org1cd49bb"><span class="section-number-2">2</span> learning with different data label yn</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="org64763f9" class="outline-4">
+<h4 id="org64763f9"><span class="section-number-4">2.0.1</span> supervised: coin recognition with yn</h4>
+</div>
+<div id="orge513e70" class="outline-4">
+<h4 id="orge513e70"><span class="section-number-4">2.0.2</span> unsupervised: coin recognition without yn</h4>
+</div>
+<div id="orge9eb13a" class="outline-4">
+<h4 id="orge9eb13a"><span class="section-number-4">2.0.3</span> semi-supervised: coin recognition some yn</h4>
+</div>
+<div id="orgc599ef8" class="outline-4">
+<h4 id="orgc599ef8"><span class="section-number-4">2.0.4</span> reinforcement learning</h4>
+</div>
+<div id="org5d78869" class="outline-4">
+<h4 id="org5d78869"><span class="section-number-4">2.0.5</span> mini summay</h4>
+</div>
+<div id="org3809b0d" class="outline-4">
+<h4 id="org3809b0d"><span class="section-number-4">2.0.6</span> fun time</h4>
+</div>
+</div>
+<div id="orgf691080" class="outline-2">
+<h2 id="orgf691080"><span class="section-number-2">3</span> learning with different protocol f=&gt;(xn,yn)</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="org38f7ffa" class="outline-4">
+<h4 id="org38f7ffa"><span class="section-number-4">3.0.1</span> batch learning: coin recognition</h4>
+</div>
+<div id="org1eb0c95" class="outline-4">
+<h4 id="org1eb0c95"><span class="section-number-4">3.0.2</span> more batch learning problems</h4>
+</div>
+<div id="org515fa06" class="outline-4">
+<h4 id="org515fa06"><span class="section-number-4">3.0.3</span> online learning: spam filter that 'improves'</h4>
+</div>
+<div id="org09d3a84" class="outline-4">
+<h4 id="org09d3a84"><span class="section-number-4">3.0.4</span> active learning: learning by 'asking'</h4>
+</div>
+<div id="orgc4a83ef" class="outline-4">
+<h4 id="orgc4a83ef"><span class="section-number-4">3.0.5</span> mini summay</h4>
+</div>
+<div id="org59248c9" class="outline-4">
+<h4 id="org59248c9"><span class="section-number-4">3.0.6</span> fun time</h4>
+</div>
+</div>
+<div id="org45dd2fb" class="outline-2">
+<h2 id="org45dd2fb"><span class="section-number-2">4</span> learning with different input space X</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="org157d997" class="outline-4">
+<h4 id="org157d997"><span class="section-number-4">4.0.1</span> more on concrete features</h4>
+</div>
+<div id="orgab67a51" class="outline-4">
+<h4 id="orgab67a51"><span class="section-number-4">4.0.2</span> raw features: digit recognition problem</h4>
+</div>
+<div id="orga77b8d4" class="outline-4">
+<h4 id="orga77b8d4"><span class="section-number-4">4.0.3</span> abstract features: rating prediction problem</h4>
+</div>
+<div id="org583d8d9" class="outline-4">
+<h4 id="org583d8d9"><span class="section-number-4">4.0.4</span> mini summay</h4>
+</div>
+<div id="org1d668bd" class="outline-4">
+<h4 id="org1d668bd"><span class="section-number-4">4.0.5</span> fun time</h4>
+<div class="outline-text-4" id="text-4-0-5">
+<p>
+从四个方面对机器学习进行分类：
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">分类依据</th>
+<th scope="col" class="org-left">分类结果</th>
+<th scope="col" class="org-left">常见用途</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">按 y 的取值范围和形式分</td>
+<td class="org-left">1. y只有两种取值：二分类</td>
+<td class="org-left">1. 是非题：病人有/没病，基金会/否涨</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">2. y有多种取值：多分类</td>
+<td class="org-left">2. 手写数字识别(0~9)</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">3. y是实数：回归</td>
+<td class="org-left">图像分类(人，猫，狗),</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">4.（从多分类演化出） y不是数，而是一种复杂的结构(图，树，列表)： structure</td>
+<td class="org-left">邮件（广告，垃圾，重要，一般）,</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">learning</td>
+<td class="org-left">自然语言辨识中的（独立词性标注： word -&gt; word class, eg 'love' -&gt; verb)</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">输出空间 y 本身有无数种可能，内涵某种潜藏的结构，希望电脑可以学习到这种结 构。</td>
+<td class="org-left">3. 预测股票价格，明天气温</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">4. 自然语言辨识中的（上下文语义的自动词性标注: sentence -&gt; structure(classes of each word) eg 'my love' -&gt; (pronoun, noun)）</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">蛋白质结构 - &gt; 蛋白质3d图</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">语音数据 -&gt; 语音解析树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">按数据点与标签对应方式分</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="org-ol">
+<li>是非题：病人有/没病，基金会/否涨</li>
+<li>手写数字识别(0~9)
+图像分类(人，猫，狗),
+邮件（广告，垃圾，重要，一般）,
+自然语言辨识中的（独立词性标注： word -&gt; word class, eg 'love' -&gt; verb)</li>
+<li>预测股票价格，明天气温</li>
+<li>自然语言辨识中的（上下文语义的自动词性标注: sentence -&gt; structure(classes of each word) eg 'my love' -&gt; (pronoun, noun)）蛋白质结构 - &gt; 蛋白质3d图语音数据 -&gt; 语音解析树按数据点与标签对应方式分</li>
+</ol>
+
+
+<ol class="org-ol">
+<li>数据点都有标签：监督学习</li>
+
+<li>数据点都没有标签：非监督学习</li>
+</ol>
+<p>
+（分群会遇到模棱两可的点，如何衡量分群的好坏很必要）（检测异常，因为异常状况的数据非常少，标签自然也非常少，所以需要用非监督学习来‘分群’ &#x2014; 从群中分出）非监学习，目标模糊，难以衡量演算法好坏
+</p>
+<ol class="org-ol">
+<li>部分数据点有标签：半监督学习</li>
+</ol>
+<p>
+（用来补偿‘昂贵的’打标签过程）
+</p>
+<ol class="org-ol">
+<li>数据点的标签很难描述(某些行为模式，某种复杂系统)：强化学习</li>
+</ol>
+<p>
+（ learn with 'partial/implicit information' eg, sitdown,often sequentially)
+(一般是序列的发生，是一笔一笔学到东西的，而不是一次性喂食给机器很多数据，所以强化学习一般也是 online learning)
+</p>
+<ol class="org-ol">
+<li>基于已有顾客数据，什么样的顾客会购买</li>
+<li>文章 -&gt; 文章主题</li>
+</ol>
+<p>
+消费者信息 -&gt; 消费者群组（分群）
+outlier detection;
+density estimation: traffic reports with location
+=&gt; dangerous areas
+internet logs =&gt; intrusion alert
+</p>
+<ol class="org-ol">
+<li>医学常用（人体实验太昂贵太耗时）</li>
+</ol>
+<p>
+让狗学会坐下： xn = 'sit down', yn = pee, goodnees = -;
+yn = sitdown, goodness = +
+</p>
+<ol class="org-ol">
+<li></li>
+</ol>
+<p>
+(customer, ad choice, ad click earning) =&gt; ad system
+(cards, strategy, winning amount) =&gt; black jack agent
+按数据喂给机器的方式分 1. （机器被喂食）一次性全部喂给机器： batch learning
+</p>
+<ol class="org-ol">
+<li>（机器被喂食）流(sequentially)式喂食机器： online learning</li>
+</ol>
+<p>
+（ online learning: hypothesis 'improves' through receiving
+data instances sequentially)
+1.observe an email xt
+2.predict spam status with current gt(xt)
+3.receive 'desired label' yt from user, and then update gt with(xt, yt)
+spam email detection:
+</p>
+<ol class="org-ol">
+<li>每一次选一个数据，看看 W 对不对</li>
+</ol>
+<p>
+只不过原来的方式是直接从缓存下来的数据点数组中取一个数据点，预测，【 然后和该点的标签比较】；现在是取一个数据点，预测，【 然后我来给出预测是否正确】。
+</p>
+<ol class="org-ol">
+<li></li>
+</ol>
+<p>
+3.这种模式非常容易使用 online learning 的方式
+PLA:
+</p>
+<ol class="org-ol">
+<li>（机器主动要食）有问有答式喂食： active leanring</li>
+</ol>
+<p>
+（ active learning: improve hypothesis with fewer labels hopefully by asking
+questions strategically）
+active learning 一般用在标记标签很‘贵’的应用中，让机器来问问题或许可以减少需要标记标签的量。
+</p>
+<ol class="org-ol">
+<li><span class="underline">__</span></li>
+<li>PLA 算法</li>
+</ol>
+<p>
+强化学习按 X 的特征分 1. 数据点的特征有明确定义： concrete feature learning
+many physical meaning
+（ concrete features: each dimension of X included in R<sup>d</sup> represent
+'sophisticated physical meaning')
+常常需要 domain knowledge ，人用自己的智慧和经验想出or找出这些特征。
+</p>
+<ol class="org-ol">
+<li>数据点特征是未经整理的资料： raw feature leaning</li>
+</ol>
+<p>
+few physical meaning
+（ raw features: often need human or machines to convert to concrete ones)
+需要特征工程•by concrete features: x的特征也许包含（像素对称度，像素密度）
+by Raw features: 每一个像素都作为一个特征，像素的灰度作为特征的值，这样的维度会相当的大，一个 16*16 的图片就是一个 256维度的数据点。•
+对于手写数字辨识，我该用什么作为我的输入 X?
+</p>
+<ol class="org-ol">
+<li>数据点特征是编号： abstract feature learning</li>
+</ol>
+<p>
+no physical meaning
+(abstract leaning: again need 'feature conversion/extraction/construction'
+数据点X的原始特征越抽象，机器就越需要花大量时间去从中获取具体的特征，困难就越大。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: yiddi</p>
+<p class="date">Created: 2018-07-18 三 09:23</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

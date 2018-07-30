@@ -1,0 +1,44 @@
+李老师继续从线性分类器开始,探讨一个基石课程中一直没涉及的问题: 如果能让 Ein=0 的
+线存在很多条(之前一直讲的是如果所有的线都分不好 Ein != 0, 现在放宽条件),哪一条是
+最好的呢.
+
+
+Large-Margin Separating Hyperplane
+Standard Large-Margin Problem
+Support Vector Machine
+Reasons behind Large-Margin Hyperplane
+
+
+为什么要探讨这个问题呢, 涉及到 *模型容错 x-noise 的能力*.
+
+#+BEGIN_QUOTE
+之前我们一直探讨的都是 *y-noise*, 处理这个问题的 learning target 是: *我要在常见
+的标签上作对*, 因为 label = f(x) + noise, eg. $D \sim Gaussian(f(x), \sigma^2)$.
+global 本身自带 noise, 所以 sample 的数据肯定也带有 noise. 但问题是, 我们不希望
+学到 noise, 我们只想学到 f(x): $g \approx f(x)$
+#+END_QUOTE
+
+
+从模型容错 x-noise 能力到 *分界面的强壮程度*:
+[[file:screenshot_2018-07-02_08-25-08.png]]
+
+*从美女中选仙女*
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-07-02 08:28:24
+[[file:screenshot_2018-07-02_08-28-24.png]]
+
+量化分界面的强壮程度:
+robustness ≡ fatness: distance to closest xn
+
+重新定义学习目标:
+find fattest separating hyperplane
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-07-02 08:32:49
+[[file:screenshot_2018-07-02_08-32-49.png]]
+
+• fatness: formally called *margin*
+• correctness: yn = sign(wTxn)
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-07-02 08:44:31
+[[file:screenshot_2018-07-02_08-44-31.png]]

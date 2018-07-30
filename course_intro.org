@@ -4,6 +4,7 @@
    - learning, answer yes or no
    - types of learning
    - feasibility of learning
+** why can learn
    - training vs. testing
    - theory of generalization
    - vc dimension
@@ -14,16 +15,127 @@
    - linear model for classification
    - non linear transformation
 ** how learn better
-   - hazard of overfitting
-   - regularization
-   - validation
-   - learning principles
+*** hazard of overfitting
 
+    ----------------------------------------------------------
+    core:
+    1. [[file:graph%20of%20course.org::*lec%2013][5 graphs]] :
+       - dvc vs error,
+       - N vs error for H2,
+       - N vs error for H10,
+       - N and $Q^f$ vs measure of overfitting(Eout(h10) - Eout(h2)), fix $\sigma^2$
+       - N and $\sigma^2$ vs measure of overfitting(Eout(h10) - Eout(h2)), fix $Q^f$
+    2. 1 generate datasets method
+       - $D \sim Gaussian(f(x), \sigma^2)$
+    ----------------------------------------------------------
+
+
+
+    - What is Overfitting?
+      - bad generalization(*state*): low Ein, high Eout.
+      - bad generalization and overfitting
+        - overfitting(*process*): lower Ein, higher Eout.
+        - underfitting
+      - Cause of Overfitting: A Driving Analogy
+        | cause of overfitting | driving analogy     |
+        |----------------------+---------------------|
+        | noise                | bumpy road          |
+        | N                    | limited observation |
+        | dvc                  | drive too fast      |
+
+        Three question:
+        1. why small N should use simple hypothesis set, illustrate by learning
+           curve. 收之桑榆失之东隅.
+        2. target fn: 10-th poly + noise, why H2 better than H10. 精力旺盛.
+    - The Role of Noise and Data Size
+      - $D \sim Gaussian(f(x), \sigma^2)$
+      - $D \sim Gaussian(\sum_0^{Q_f}\alpha_qx^q, \sigma^2)$
+      - measure of overfitting: the change of Eout
+
+         lec 13 how learn better, overfitting, ppt 14/22
+
+[[file:Graph of ml foundation/screenshot_2018-07-01_21-31-05.png]][[file:Graph of ml foundation/screenshot_2018-07-01_21-31-18.png]]
+
+         display the overfitting of two variables
+
+         overfitting measure formula: Eout(h10) - Eout(h2), the bigger difference, the deeper color.
+
+         1st graph: fix order of target fn, compute the overfitting measure influenced by (noise level, N)
+         2nd graph: fix noise level of dataset, compute the overfitting measure influenced by (order of target fn, N)
+         1st graph: stochastic noise influence on overfitting
+         2nd graph: deterministic noise influence on overfitting
+    - Deterministic Noise
+      - deterministic noise = (h*(x) - f(x))
+      - stochastic noise = actual noise
+    - Dealing with Overfitting
+      - noise: data cleaning, data pruning
+      - N: generate some data points carefully, maybe need domain knowledge
+      - dvc: regularization
+*** regularization
+    Regularized Hypothesis Set
+    Weight Decay Regularization
+    Regularization and VC Theory
+    General Regularizers
+*** validation
+    Model Selection Problem
+    Validation
+    Leave-One-Out Cross Validation
+    V-Fold Cross Validation
+*** learning principles
+    Occam’s Razor
+    Sampling Bias
+    Data Snooping
+    Power of Three
 * technical
 ** embedding numerous features: kernel models
    - kernel modes
-   - dual svm
+   - dual svm : 衍生出一种思想: 你的 w 到底由什么决定的, PLA: wrong error datapoints; SVM: sv datapoints.
    - kernel svm
+     #+BEGIN_EXAMPLE
+     1. scaling,
+     2. looser bound get same result
+     3. give an example of how this conditional optimization problem find the best w* and b* from the hypothesis set wx+b
+     4. if can there exist the optimal solution, then the margin is 1/||w||
+
+     5. QP: optimal function is quadratic, the limit condition is linear combination
+     6. if we can convert our optimization problem to QP format, then by math API, we can get the result directly.
+     7.
+     - optimal target: w,b;
+     - optimal function: 1/2wtw;
+     - optimal condition: yn(wtxn+b)>=1
+
+
+     recall log reg:
+     some time you don't know how to do error numeralization. you can do this by some physical meanings: eg. logreg ---> probability of label = 1
+
+     physical meaning ==> some format like :
+
+     g = argmin_w[xxxx]
+
+     xxxx is the error numeraization function, this may not be the format of (yn-y^), here logreg error is:
+
+     ln(1+e^(-ynwtxn))
+
+
+     normally， to the relationship between the dvc, k, d:
+     dvc = k-1 = d+1
+
+     we always do  shatter ==> k-1 ==> dvc ==> d+1 ， this order to find the generalization ability of a hypothesis set.
+
+
+     ML tech include: 隐含，组合，提纯 features 的技术。
+
+     SVM and L2 regularizer 有非常深的关系，首先两者的 target fn 和 target condition 互换。
+
+     其次，dual SVM 和 L2 regularizer 推导，都用到了拉格朗日乘数法。
+
+     L2:
+     g = argmin_w Ein(w), sub to ||w||^2 <= c
+
+     lagrange(simple order 2 optimization fn, one order 2 condition: taget <= sth) vs. QP(order 2 optimization fn, bunch of order 1 condition：target >= sth)
+
+
+     #+END_EXAMPLE
    - soft margin svm
    - kernel logistic regression
    - sv regression
