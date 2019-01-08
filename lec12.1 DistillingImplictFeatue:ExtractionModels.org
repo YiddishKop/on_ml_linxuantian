@@ -1,0 +1,491 @@
+# -*- org-export-babel-evaluate: nil -*-
+#+PROPERTY: header-args :eval never-export
+#+PROPERTY: header-args:python :session Distilling Implicit Features: Extraction Models
+#+PROPERTY: header-args:ipython :session Distilling Implicit Features: Extraction Models
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/home/yiddi/git_repos/YIDDI_org_export_theme/theme/org-nav-theme_cache.css" >
+#+HTML_HEAD: <script src="https://hypothes.is/embed.js" async></script>
+#+HTML_HEAD: <script type="application/json" class="js-hypothesis-config">
+#+HTML_HEAD: <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:nil html-preamble:t
+#+OPTIONS: H:3 num:t ^:nil _:nil tags:not-in-toc
+#+TITLE: Distilling Implicit Features: Extraction Models
+#+AUTHOR: yiddishkop
+#+EMAIL: [[mailto:yiddishkop@163.com][yiddi's email]]
+#+TAGS: {PKGIMPT(i) DATAVIEW(v) DATAPREP(p) GRAPHBUILD(b) GRAPHCOMPT(c)} LINAGAPI(a) PROBAPI(b) MATHFORM(f) MLALGO(m)
+
+
+
+1. Linear aggregation of Perceptrons: 2个 Perceptrons 就可以做到弯曲的边界, 比如实现逻辑与运算.
+
+2. 2 个 perceptrons 做不到 XOR 这种边界(双曲线)
+
+3. 不是线性可分的, 那就做转换(transformation)直到线性可分为止(最后一层构成的转换
+   后的样本空间是线性可分的)
+
+4. multi-layer perceptrons <---- aggregation of perceptrons <---- perceptron.
+
+
+[[file:screenshot_2018-08-21_08-38-58.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 06:05:42
+[[file:screenshot_2018-08-20_06-05-42.png]]
+
+hyperbolic tangent function: ~tanh~, 在小范围内跟 y=x 类似, 在大范围内跟 sign 函
+数类似, 所以一般用来作为激活函数, 他与 logistic regression 大有关系:
+
+$tanh(s) = 2\theta(2s) - 1$
+
+$tanh(s) = \frac{exp(s)-exp(-s)}{exp(s)+exps(-s)}$
+
+$\theta(s) = \frac{1}{1+exp(-s)}$
+
+也就是相当于对 sigmoid 进行平移和放缩.
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 06:32:05
+[[file:screenshot_2018-08-20_06-32-05.png]]
+
+
+[[file:screenshot_2018-08-20_06-39-57.png]]
+
+每一层转换都是在用 X向量 与多个 w向量做内积, 内积表示 *两个向量的相似度*:
+- 平行:内积为 +/-1
+- 垂直:内积为0
+
+由此可以看出, *每一个 w* 都是在试图判断并析出 X向量中的 *某一种pattern*
+- 完全有(平行): s = +/-1;
+- 有一些(x有平行于w的分量): s = 0.5
+- 完全没有(垂直): s = 0
+
+s = 0 激活函数就会处于抑制状态, tanh(0) = 0. 就不会继续往下传递.
+
+12.3 权重 w 如何更新.
+
+注意这个NN结构的名称:
+
+#+BEGIN_EXAMPLE
+   l=0                  l=1                 l=2                l=L
+
+    *                                        *
+
+    *                    *                   *
+
+    *                    *                   *                 *
+
+    *   |            |   *   |            |  *    |
+        |            |       |            |       |
+    *   |            |       |            |  *    |
+        v            v       v            v       v
+ x^(l=0)_4     s^(l=1)_3  x^(l=1)_3   s^(l=2)_4  x^(l=2)_4
+
+    \-------------/\-----------/\---------/\---------/
+       W^(l=1)_43      tanh     W^(l=2)_34    tanh
+#+END_EXAMPLE
+
+这里林轩田教授是在用 *类似递归* 的方式来做 BP 算法.
+1. 通过链式法则求出第 L 层(最后一层)
+
+   $$\frac{\partial{e_n}}{\partial{w_{i1}^L}}
+   =\frac{\partial{e_n}}{\partial{s_1^L}}\frac{\partial{s_1^L}}{\partial{w_{i1}^L}}
+   =\delta_1^L{x^{L-1}_i}
+   $$
+
+   , 设其中的 partial of en against s1 为 delta
+
+   $$\delta^L_1 = \frac{\partial{e_n}}{\partial{s_1^L}}$$
+
+2. 通过链式法则求出第 l 层(任意一层)
+
+   $$\frac{\partial{e_n}}{\partial{w_{ij}^l}}
+   =\frac{\partial{e_n}}{\partial{s_j^l}}\frac{\partial{s_j^l}}{\partial{w_{ij}^l}}
+   =\delta_j^l{x^{l-1}_i}
+   $$
+
+   得到 $\delta^{l}_j$ 与 $\delta^{l+1}_j$ 之间的递归关系关系:
+
+   $\delta^{l}_j = f(\delta^{l+1}_j) = f(f(\delta^{l+2}_j)) = ... = f(...f(\delta^{L}_1))$
+
+3. 如此就可以最终计算出 wij 的梯度,
+   - 其中 $x_i^{l-1}$ 的计算是从 $x^{input}$ 一路向后计算
+
+   - 其中 $\delta_j^l$ 的计算是从 $\delta_1^L$ 一路向前计算.
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 08:39:41
+[[file:screenshot_2018-08-20_08-39-41.png]]
+
+
+[[file:screenshot_2018-08-20_08-40-02.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 09:10:15
+[[file:screenshot_2018-08-20_09-10-15.png]]
+
+
+
+[[file:screenshot_2018-08-20_09-59-05.png]]
+
+
+
+[[file:screenshot_2018-08-20_10-01-02.png]]
+
+
+autoencoder and noise tolerance autoencoder 可以用在三个方面:
+1. 监督学习: 提取数据的 *本质*
+2. 非监督学习: 提取数据的 *共性*
+3. 作为 *regularizer*.
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:14:29
+[[file:screenshot_2018-08-20_17-14-29.png]]
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:14:47
+[[file:screenshot_2018-08-20_17-14-47.png]]
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:15:09
+[[file:screenshot_2018-08-20_17-15-09.png]]
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:15:35
+[[file:screenshot_2018-08-20_17-15-35.png]]
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:15:48
+[[file:screenshot_2018-08-20_17-15-48.png]]
+
+
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:39:09
+[[file:screenshot_2018-08-20_17-39-09.png]]
+
+
+#+BEGIN_QUOTE
+gsvm => *linear aggregation* of *selected radial* hypothesis.
+#+END_QUOTE
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 17:41:44
+[[file:screenshot_2018-08-20_17-41-44.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:07:45
+[[file:screenshot_2018-08-20_18-07-45.png]]
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:03:41
+[[file:screenshot_2018-08-20_18-03-41.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:08:10
+[[file:screenshot_2018-08-20_18-08-10.png]]
+
+#+BEGIN_EXAMPLE
+                ......................
+linear agg of   . kind of similarity .   using k-means for prototype finding
+----------      ......................
+       |          Transformation of Xn to Zn
+       |          according to similarity to
+       |          some prototype
+       |               /
+       |              /
+       +--------------\---------+
+RBF Network:         /          |
+                    /           |
+    +--  *         /            |
+    |                           |
+    |    *               *
+xn -+                                  * <------> yn
+    |    *               *
+    |
+    <--  *
+
+
+- gaussian SVM, 使用 z空间中向量的内积来作为相似性
+- RBF Network,  使用 x空间中普通点与每个 prototype 点的距离作为相似性(转换之后维度与 prototype点数量相同)
+- autoencoder,PCA,  使用某个点最"相似"(信息损失最小) 的方向作为相似性转换.
+
+#+END_EXAMPLE
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:14:08
+[[file:screenshot_2018-08-20_18-14-08.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:14:46
+[[file:screenshot_2018-08-20_18-14-46.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:19:34
+[[file:screenshot_2018-08-20_18-19-34.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:25:27
+[[file:screenshot_2018-08-20_18-25-27.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-20 18:26:12
+[[file:screenshot_2018-08-20_18-26-12.png]]
+
+
+
+非监督学习, 可以用来做特征萃取,特征转换, 因为他只在 {xn} 空间中搞事情, 总是能搞
+到一些 *本质信息* 和 *共性信息*:
+1. autoencoder find the "code": find the best code who can reconstruct every xn.
+   this code is the prototype of xn. conclusion is project every xn to the
+   direction of topmost eigenvectors of XTX.
+2. RBF is a transformation from xn to radial distance to a prototype, find
+   prototype by k-means.
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:29:52
+[[file:screenshot_2018-08-21_06-29-52.png]]
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:30:23
+[[file:screenshot_2018-08-21_06-30-23.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:30:43
+[[file:screenshot_2018-08-21_06-30-43.png]]
+
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:32:45
+[[file:screenshot_2018-08-21_06-32-45.png]]
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:33:01
+[[file:screenshot_2018-08-21_06-33-01.png]]
+
+
+15.1 推荐系统回忆
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 04:35:44
+[[file:screenshot_2018-08-21_04-35-44.png]]
+
+编号都是抽象特征, 编号没有任何现实意义, 他们大部分都是 "种类" 信息, categorical
+features --- 如上表示为 $\tilde{x}$
+
+
+
+
+[[file:screenshot_2018-08-21_04-42-14.png]]
+
+*决策树系列算法* 可以处理 categorical feature. 这里探讨的是对 categorical
+feature 做特征转换, 这种特征转换通常叫做 *encoding*, encoding 需要预先定义 *转换
+规则*. 常用的转换规则包括: *one-hot encoding*
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 04:50:55
+[[file:screenshot_2018-08-21_04-50-55.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 05:00:02
+[[file:screenshot_2018-08-21_05-00-02.png]]
+
+
+#+BEGIN_EXAMPLE
+
+            M维:用户         d~维度       N维:每一维度都是整数
+        M个用户 one-hot                      (表示该类电影评分)
+
+             *                                  *
+
+             *                 *                *
+
+x            *                 *                *
+
+             *                 *                *
+
+             *                                  *
+               |------------|     |-----------|
+
+                     V                 W
+
+               dim= d~ * N         dim= d~ * M
+
+h(x) =     WT        V        x
+         /          /        /
+     M*d~        d~*N      N*1
+
+#+END_EXAMPLE
+
+
+15.2 MF
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 05:17:33
+[[file:screenshot_2018-08-21_05-17-33.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:13:45
+[[file:screenshot_2018-08-21_06-13-45.png]]
+
+矩阵分解经常用来从 ~(无意义个体, 个体动作信息)~ (eg, ~(user-id,
+user-movie-ranking)~) 这样的 *键值对* 中来萃取出:
+#+BEGIN_EXAMPLE
+个体在这样的context        (电影评价,              购物轨迹, 等个体发出的生活信息) 下
+
+                              ||                     ||
+                              ||                     ||
+                              ||                     ||
+
+对应context-based-features (对各个种类电影的喜好, 对各个种类物品的需求)
+#+END_EXAMPLE
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 06:48:12
+[[file:screenshot_2018-08-21_06-48-12.png]]
+
+这里注意: *w1 并不影响 w2 的 Ein*, w1 是用户萃取信息(中间隐含层所有神经元) 与 对
+某一类电影的权重(输出层某个神经元), 具体表现为 W 矩阵的某一行.
+
+#+BEGIN_EXAMPLE
+
+            M维:用户         d~维度       N维:每一维度都是整数
+        M个用户 one-hot                      (表示该类电影评分)
+
+           0 *                                  *
+                                                     Ein on (n,m)
+           0 *               / * -------------  *   <-----------> rnm
+                            /       /
+x          1 *  ------------   *   /            *
+                            \     /
+           0 *               \ * /              *
+
+           0 *                                  *
+               |------------|     |-----------|
+
+                     v3                 w2
+
+#+END_EXAMPLE
+
+*不论 w2 怎么调, 都不会影响第三部电影产生的 Ein*
+
+  所以对于 Ein 公式:
+
+  $$
+  \sum_{m=1}^{M}(\sum_{(x_n,r_{nm})\in{D_m}}(r_{nm} - w_m^Tv_n)^2)
+  $$
+
+  *当 fix vn, 我们只需要最小化公式中与 wm 有关的部分即可*, 也就是不需要关注前面的
+
+  sum 符号:
+
+  $$\sum_{m=1}^M$$
+
+  只需要关注里面的这个部分
+
+  $$(\sum_{(x_n,r_{nm})\in{D_m}}(r_{nm} - w_m^Tv_n)^2)$$
+
+  并对其优化即可, 这个部分 rnm 和 vn 都是固定的, 要最小化这个公式, 就是最小化
+  *linear regression*.
+
+  *当 fix wm, 我们只需要最小化公式中与 vn 有关的部分即可*, 略, 同上.
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 07:04:58
+[[file:screenshot_2018-08-21_07-04-58.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 07:08:05
+[[file:screenshot_2018-08-21_07-08-05.png]]
+
+
+所以 *矩阵分解也是一种做特征转换,特征萃取的有效工具*, 常用的矩阵分解技术:
+- linear autoencoder, PCA: eigen decomposition.
+- MF: *目标* 是得到两个 *分解矩阵*, 但使用的是 *alternative least square* 算法.
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 07:24:01
+[[file:screenshot_2018-08-21_07-24-01.png]]
+
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 07:56:15
+[[file:screenshot_2018-08-21_07-56-15.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 07:57:52
+[[file:screenshot_2018-08-21_07-57-52.png]]
+
+
+这里的 residual 是指:
+
+$residual = true - predict = r_{nm} - w_m^Tv_n$
+
+这里的 other factor 是指:
+
+- *vn* 的 gradient 使用 *wm* 与 residual 相乘
+- *wm* 的 gradient 使用 *vn* 与 residual 相乘
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:01:55
+[[file:screenshot_2018-08-21_08-01-55.png]]
+
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:24:11
+[[file:screenshot_2018-08-21_08-24-11.png]]
+
+当你明确的知道, 手上的训练集的分布, 不能完全代表验证集(or 真实情况)的分布的时候.你
+需要根据你掌握的分布的差异性更改模型中的一些组件:
+1. (微调)直接强化or削弱训练集中对应的样本, 增加数量增加权重等等.
+2. (普调)通过更改optimize算法,剧来说是调整他的 *注意力*,使之通过一种 *春风化雨* 般的方
+   法来调整整体的 *优化方向*.
+
+对于第二种方法,举例说明:
+
+SGD 这类算法有点像是用 "吹风机" 捋顺杂乱的 *硬* 毛发, 越是 *后来进行* 的
+$\nabla_\theta(error_{ sampel })$ 更新, 越会被 *重视*, 对比最后一秒钟 "吹" 的方
+向总是会影响 *硬* 毛发多一些.
+
+根据 SGD 的这个特点, 我们可以调整 "Stochastic"GD 在最后 100 个样本的时候不是随机
+抽取, 而是指定其为 *时间顺序上* 最新的100个样本. 这样由于 SGD 会 "重视" 最后的更
+新轮次, 而我们使用 "时间顺序上最新的样本" 做更新. 就会造成:
+
+_模型整体对 *时间顺序新进产生* 的准确率更高._
+
+#+BEGIN_EXAMPLE
++--------------------------+-----------+
+|     N-100                |  100      |
++--------------------------+-----------+
+\-------------------------/ \---------/
+     SGD                    non-stochastic GD
+#+END_EXAMPLE
+
+这样做就能够针对哪些 *具有时效性* (比如推荐系统应该推荐用户最近喜欢的东西,而不是
+100年前喜欢的东西)的任务做更好的预测.
+
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:29:49
+[[file:screenshot_2018-08-21_08-29-49.png]]
+
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:32:08
+[[file:screenshot_2018-08-21_08-32-08.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:34:37
+[[file:screenshot_2018-08-21_08-34-37.png]]
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:35:30
+[[file:screenshot_2018-08-21_08-35-30.png]]
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2018-08-21 08:35:40
+[[file:screenshot_2018-08-21_08-35-40.png]]

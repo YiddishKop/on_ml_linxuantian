@@ -20,7 +20,7 @@ absolutely no free lunch outside D
 *** no free lunch
 *** fun time
 * Probability to the Rescue
-probably approximately correct outside D
+  probably approximately correct outside D
 *** inferring something unknown
 *** statics 101: inferring orange probability
 *** possible vs. probable
